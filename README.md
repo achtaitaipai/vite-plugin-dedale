@@ -21,7 +21,7 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
 ## Installation
 
 ```bash
-$ npm install vite-plugin-dedale
+$ npm install --save-dev vite-plugin-dedale
 ```
 
 ## Configuration

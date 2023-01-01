@@ -41,7 +41,7 @@ vite-plugin-dedale accepts the following options in its configuration:
 ```ts
 //vite.config.ts
 import { defineConfig } from "vite";
-import { dedale } from "vite-plugin-dedale";
+import { dedale,type NunjucksEnvironment } from "vite-plugin-dedale";
 
 export default defineConfig({
   plugins: [
@@ -49,7 +49,7 @@ export default defineConfig({
 		{
 		templateDir: "templates",
 		contentDir: "content",
-		configureNunjucks: (env) => {
+		configureNunjucks: (env:NunjucksEnvironment) => {
 			env.addGlobal("siteTitle", "MySite");
 			return env;
 		},
@@ -85,7 +85,16 @@ vite-plugin-dedale provides several utility functions for parsing and loading Ma
 Loads the content and frontmatter metadata from a single Markdown file.
 
 ```ts
-loadMdFile<T extends Record<string, any>>(filePath: string): MdFile<T>
+import { loadMdFile } from "vite-plugin-dedale";
+
+type Fontmatter = {
+  title: string;
+};
+
+const aboutContent = loadMdFile<Frontmatter>("/content/page/about.md");
+
+console.log(aboutContent.frontmatter.title); // "About us"
+console.log(aboutContent.content); // "<p>...</p>"
 ```
 
 ### Parameters
@@ -106,7 +115,17 @@ An object with the following properties:
 Loads the content and frontmatter metadata from all Markdown files in the first level of the specified directory.
 
 ```ts
-loadMdFile<T extends Record<string, any>>(filePath: string): MdFile<T>
+import { loadAllMdFilesFrom } from "vite-plugin-dedale";
+
+type ArticleFrontmatter = {
+  title: string;
+  date: string;
+};
+
+const articles = loadAllMdFilesFrom<ArticleFrontmatter>("/content/articles");
+
+console.log(articles[0].frontmatter.title); // "My Blog Post"
+console.log(articles[0].content); // "<p>This is the content of my blog post.</p>"
 ```
 
 ### Parameters

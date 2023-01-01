@@ -30,7 +30,7 @@ vite-plugin-dedale accepts the following options in its configuration:
 
 - `templateDir` (required): The path to the directory containing your Nunjucks templates.
 - `contentDir` (optional): The path to the directory containing your content files (such as Markdown files). This option enables hot reloading of these files in development mode.
-- `configureNunjucks` (optional): A function that allows you to customize the Nunjucks environment. This function takes in a Nunjucks environment as an argument and returns a modified version of that environment.
+- `configureNunjucks` (optional): A function that allows you to customize the Nunjucks environment. This function takes in a Nunjucks environment as an argument and returns a modified version of that environment. For more information on how to configure Nunjucks, refer to the [Nunjucks documentation](https://mozilla.github.io/nunjucks/api.html#addfilter).
 - `routes` (required): An array of route objects, each with the following properties:
   - `url` (string): The URL for this route.
   - `template` (string): The name of the Nunjucks template to use for this route.
@@ -41,7 +41,7 @@ vite-plugin-dedale accepts the following options in its configuration:
 ```ts
 //vite.config.ts
 import { defineConfig } from "vite";
-import { dedale,type NunjucksEnvironment } from "vite-plugin-dedale";
+import { dedale } from "vite-plugin-dedale";
 
 export default defineConfig({
   plugins: [
@@ -49,7 +49,7 @@ export default defineConfig({
 		{
 		templateDir: "templates",
 		contentDir: "content",
-		configureNunjucks: (env:NunjucksEnvironment) => {
+		configureNunjucks: (env) => {
 			env.addGlobal("siteTitle", "MySite");
 			return env;
 		},

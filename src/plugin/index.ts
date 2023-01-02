@@ -1,8 +1,8 @@
 import path from "node:path";
 import { Plugin } from "vite";
 import { Options } from "../types";
+import { getRenderTemplate } from "./getRenderTemplate";
 import { parseRoute } from "./parseRoute";
-import { getNunjucksEnv, getRenderTemplate } from "./getRenderTemplate";
 import { resolveSettings } from "./resolveSettings";
 
 export const plugin = (options: Options): Plugin => {
@@ -54,7 +54,7 @@ export const plugin = (options: Options): Plugin => {
     load(id) {
       const route = routes.find(({ url }) => parseRoute(url) === id);
       if (id.endsWith(".html") && route) {
-        const renderTemplate = getRenderTemplate(templateEngineSettings);
+        const renderTemplate = getRenderTemplate(templateEngineSettings, false);
         return renderTemplate(route);
       }
       return null;

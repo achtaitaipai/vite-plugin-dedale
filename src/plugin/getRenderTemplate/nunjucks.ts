@@ -12,11 +12,12 @@ let nunjucksEnv: RenderRoute;
 export const getRenderWithNunjucks: GetRenderTemplate<ConfigureNunjucks> = (
   templateDir,
   configure,
-  devMode
+  devMode = false
 ) => {
   if (nunjucksEnv) return nunjucksEnv;
   else {
-    const env = nunjucks.configure(templateDir, { watch: !devMode });
+    const options = devMode ? { watch: true } : {};
+    const env = nunjucks.configure(templateDir, options);
     if (!configure) {
       return getRenderMethod(env);
     }

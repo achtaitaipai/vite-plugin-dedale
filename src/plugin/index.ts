@@ -2,27 +2,24 @@ import path from "node:path";
 import { Plugin } from "vite";
 import { Options } from "../types";
 import { parseRoute } from "./parseRoute";
-import { getNunjucksEnv } from "./getNunjucksEnv";
+import { getNunjucksEnv, getRenderTemplate } from "./getRenderTemplate";
 import { resolveSettings } from "./resolveSettings";
 
 export const plugin = (options: Options): Plugin => {
-  const { routes, templateDir, contentDir, configureNunjucks } =
+  const { routes, contentDir, templateEngineSettings } =
     resolveSettings(options);
   return {
     name: "vite-plugin-dedale",
     enforce: "pre",
     configureServer(server) {
-      const nunjucks = getNunjucksEnv(templateDir, configureNunjucks, true);
+      const renderTemplate = getRenderTemplate(templateEngineSettings, true);
       server.middlewares.use(async (req, res, next) => {
-        const url = req.url;
+        const url = req.url as string;
         if (!url) return;
         const currentRoute = routes.find((route) => route.url === url);
         if (!currentRoute) return next();
         try {
-          const html = nunjucks.render(currentRoute.template, {
-            url,
-            ...currentRoute.data,
-          });
+          const html = renderTemplate(currentRoute);
           const content = await server.transformIndexHtml(url, html);
           return res.end(content);
         } catch (error: any) {
@@ -57,14 +54,14 @@ export const plugin = (options: Options): Plugin => {
     load(id) {
       const route = routes.find(({ url }) => parseRoute(url) === id);
       if (id.endsWith(".html") && route) {
-        const nunjucks = getNunjucksEnv(templateDir, configureNunjucks);
-        return nunjucks.render(route.template, route.data);
+        const renderTemplate = getRenderTemplate(templateEngineSettings);
+        return renderTemplate(route);
       }
       return null;
     },
     handleHotUpdate(context) {
       const filePath = path.join(context.file);
-      if (filePath.includes(templateDir))
+      if (filePath.includes(templateEngineSettings.templateDir))
         context.server.ws.send({
           type: "full-reload",
         });

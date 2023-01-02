@@ -1,12 +1,20 @@
 import path from "path";
-import { Options } from "../types";
+import { Route } from "../../dist";
+import { Options, TemplateEngineSettings } from "../types";
 
 export const resolveSettings = (config: Options) => {
-  const { routes, templateDir, contentDir, configureNunjucks } = config;
+  const { routes, contentDir, ...templateEngineSettings } = config;
+  templateEngineSettings.templateDir = path.join(
+    process.cwd(),
+    templateEngineSettings.templateDir
+  );
   return {
-    templateDir: path.join(process.cwd(), templateDir),
     contentDir: contentDir && path.join(process.cwd(), contentDir),
     routes,
-    configureNunjucks: configureNunjucks,
+    templateEngineSettings,
+  } satisfies {
+    contentDir?: string;
+    routes: Route[];
+    templateEngineSettings: TemplateEngineSettings;
   };
 };

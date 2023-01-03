@@ -18,6 +18,36 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
 - [Vituum](https://vituum.dev/)
 - [Vite-plugin-ssr](https://vite-plugin-ssr.com/).
 
+---
+
+## Table of Content
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Example](#example)
+- [Load Files](#load-files)
+  - [`loadMdFile`](#loadmdfile)
+    - [Parameters](#parameters)
+    - [Returns](#returns)
+  - [`loadMdFiles`](#loadmdfiles)
+    - [Parameters](#parameters-1)
+    - [Returns](#returns-1)
+- [Utility Functions for Use in Templates](#utility-functions-for-use-in-templates)
+  - [`routes`](#routes)
+    - [Parameters](#parameters-2)
+    - [Returns](#returns-2)
+    - [Examples](#examples)
+  - [`route`](#route)
+    - [Parameters](#parameters-3)
+    - [Returns](#returns-3)
+    - [Examples](#examples-1)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Installation
 
 ```bash
@@ -99,11 +129,11 @@ console.log(aboutContent.frontmatter.title); // "About us"
 console.log(aboutContent.content); // "<p>...</p>"
 ```
 
-### Parameters
+#### Parameters
 
 - `filePath` (string): The file path of the Markdown file.
 
-### Returns
+#### Returns
 
 An object with the following properties:
 
@@ -130,11 +160,11 @@ console.log(articles[0].frontmatter.title); // "My Blog Post"
 console.log(articles[0].content); // "<p>This is the content of my blog post.</p>"
 ```
 
-### Parameters
+#### Parameters
 
 - `filePath` (string): The file path of the Markdown file.
 
-### Returns
+#### Returns
 
 An array of objects, each with the following properties:
 
@@ -142,3 +172,77 @@ An array of objects, each with the following properties:
 - `filename` (string): The file name of the Markdown file.
 - `frontmatter` (T): The frontmatter metadata of the file.
 - `content` (string): The parsed content of the file.
+
+## Utility Functions for Use in Templates
+
+vite-plugin-dedale provides two utility functions that can be used in Nunjucks or Edge.js templates:
+
+### `routes`
+
+Returns an array of all routes that match the provided pattern.
+
+#### Parameters
+
+- `pattern` (string): A pattern that uses [glob syntax](https://github.com/isaacs/node-glob#glob-primer) to match the routes.
+
+#### Returns
+
+An array of objects, each representing a route with the following properties:
+
+- `url` (string): The URL of the route.
+- `template` (string): The path to the Nunjucks template file.
+- `data` (object): An optional data object that will be passed to the template when rendering the route.
+
+#### Examples
+
+nunjucks :
+
+```nunjucks
+{% for route in routes('/blog/*') %}
+	<a href="{{ route.url }}">{{ route.data.title }}</a>
+{% endfor %}
+```
+
+edge.js :
+
+```edge.js
+@each(route in routes('/blog/*'))
+	<a href="{{ route.url }}">{{ route.data.title }}</a>
+@end
+```
+
+### `route`
+
+Returns the first route that matches the provided pattern.
+
+#### Parameters
+
+- `pattern` (string): A pattern that uses [glob syntax](https://github.com/isaacs/node-glob#glob-primer) to match the route.
+
+#### Returns
+
+An object representing the route with the following properties:
+
+- `url` (string): The URL of the route.
+- `template` (string): The path to the Nunjucks template file.
+- `data` (object): An optional data object that will be passed to the template when rendering the route.
+
+#### Examples
+
+nunjucks :
+
+```nunjucks
+{% set aboutRoute = route('/about/') %}
+{% if aboutRoute %}
+	<a href="{{ aboutRoute.url }}">About</a>
+{% endif %}
+```
+
+edge.js :
+
+```edge.js
+ @set('aboutRoute',route('/contact/'))
+@if(aboutRoute)
+	<a href="{{ aboutRoute.url }}">About</a>
+@endif
+```

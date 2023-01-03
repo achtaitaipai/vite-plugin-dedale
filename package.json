@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-dedale",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A ViteJS plugin for building static sites with nunjucks or edge templates and markdown content. ",
   "repository": "https://github.com/achtaitaipai/vite-plugin-dedale",
   "type": "module",
@@ -28,7 +28,9 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@types/glob": "^8.0.0",
     "@types/marked": "^4.0.8",
+    "@types/minimatch": "^5.1.2",
     "@types/nunjucks": "^3.2.1",
+    "doctoc": "^2.2.1",
     "esbuild": "^0.16.12",
     "rollup": "^3.9.0",
     "rollup-plugin-dts": "^5.1.0",
@@ -43,6 +45,7 @@
     "front-matter": "^4.0.2",
     "glob": "^8.0.3",
     "marked": "^4.2.5",
+    "minimatch": "^5.1.2",
     "nunjucks": "^3.2.3",
     "ts-pattern": "^4.0.6"
   },

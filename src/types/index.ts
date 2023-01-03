@@ -5,3 +5,8 @@ export type {
   TemplateEnginKey,
   TemplateEngineSettings,
 } from "./templateEngineSettings";
+export type {
+  ConfigureEdge,
+  ConfigureNunjucks,
+  GetRenderTemplate,
+} from "./getRenderTemplate";

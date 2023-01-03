@@ -1,6 +1,6 @@
+import type { Plugin } from "vite";
+import type { Options, RenderRoute } from "../types";
 import path from "node:path";
-import { Plugin } from "vite";
-import { Options } from "../types";
 import { getRenderTemplate } from "./getRenderTemplate";
 import { parseRoute } from "./parseRoute";
 import { resolveSettings } from "./resolveSettings";
@@ -8,11 +8,36 @@ import { resolveSettings } from "./resolveSettings";
 export const plugin = (options: Options): Plugin => {
   const { routes, contentDir, templateEngineSettings } =
     resolveSettings(options);
+
+  let renderTemplate: RenderRoute;
   return {
     name: "vite-plugin-dedale",
     enforce: "pre",
+
+    config(_, { command, mode }) {
+      if (command === "build") {
+        renderTemplate = getRenderTemplate(
+          templateEngineSettings,
+          routes,
+          false
+        );
+        const input = routes.map(({ url }) => parseRoute(url));
+        return {
+          build: {
+            rollupOptions: {
+              input,
+            },
+          },
+        };
+      } else if (mode === "development") {
+        renderTemplate = getRenderTemplate(
+          templateEngineSettings,
+          routes,
+          true
+        );
+      }
+    },
     configureServer(server) {
-      const renderTemplate = getRenderTemplate(templateEngineSettings, true);
       server.middlewares.use(async (req, res, next) => {
         const url = req.url as string;
         if (!url) return;
@@ -30,18 +55,6 @@ export const plugin = (options: Options): Plugin => {
         }
       });
     },
-    config(_, { command }) {
-      if (command === "build") {
-        const input = routes.map(({ url }) => parseRoute(url));
-        return {
-          build: {
-            rollupOptions: {
-              input,
-            },
-          },
-        };
-      }
-    },
 
     resolveId(id) {
       if (routes.find(({ url }) => parseRoute(url) === id)) {
@@ -54,11 +67,11 @@ export const plugin = (options: Options): Plugin => {
     load(id) {
       const route = routes.find(({ url }) => parseRoute(url) === id);
       if (id.endsWith(".html") && route) {
-        const renderTemplate = getRenderTemplate(templateEngineSettings, false);
         return renderTemplate(route);
       }
       return null;
     },
+
     handleHotUpdate(context) {
       const filePath = path.join(context.file);
       if (filePath.includes(templateEngineSettings.templateDir))

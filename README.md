@@ -5,7 +5,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
@@ -103,6 +102,8 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
        {% if foo %}
        <span>{{ foo }}</span>
        {% endif %}
+      <div id="app"></div>
+        <script type="module" src="/src/main.ts"></script>
      </body>
    </html>
    ```
@@ -258,7 +259,7 @@ nunjucks :
 edge.js :
 
 ```edge.js
-@set('aboutRoute',route('/contact/'))
+@set('aboutRoute',route('/about/'))
 @if(aboutRoute)
 	<a href="{{ aboutRoute.url }}">About</a>
 @endif

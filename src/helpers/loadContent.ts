@@ -11,6 +11,7 @@ type MdFile<T extends Record<string, any>> = {
   filepath: string;
   filename: string;
   frontmatter: T;
+  raw: string;
   content: string;
 };
 
@@ -28,6 +29,7 @@ const parseFile = <T extends Record<string, any>>(url: string): MdFile<T> => {
     filepath: url,
     filename,
     frontmatter: data.attributes as T,
+    raw: data.body,
     content: marked.parse(data.body),
   };
 };

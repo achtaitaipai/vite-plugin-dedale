@@ -103,7 +103,7 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
        <span>{{ foo }}</span>
        {% endif %}
       <div id="app"></div>
-        <script type="module" src="/src/main.ts"></script>
+   	  <script type="module" src="/src/main.ts"></script>
      </body>
    </html>
    ```
@@ -158,6 +158,7 @@ An object with the following properties:
 - `filepath` (string): The file path of the Markdown file.
 - `filename` (string): The file name of the Markdown file.
 - `frontmatter` (T): The frontmatter metadata of the file.
+- `raw` (string): The content of the file.
 - `content` (string): The parsed content of the file.
 
 ### `loadMdFiles`
@@ -189,6 +190,7 @@ An array of objects, each with the following properties:
 - `filepath` (string): The file path of the Markdown file.
 - `filename` (string): The file name of the Markdown file.
 - `frontmatter` (T): The frontmatter metadata of the file.
+- `raw` (string): The content of the file.
 - `content` (string): The parsed content of the file.
 
 ## Utility Functions for Use in Templates

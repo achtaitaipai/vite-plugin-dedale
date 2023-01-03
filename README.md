@@ -1,31 +1,12 @@
 # Vite Plugin Dedale
 
-vite-plugin-dedale is a plugin for [Vite](https://vitejs.dev/) that helps you navigate the complexities of creating static sites, much like the mythological figure Daedalus (or "Dédale" in French).
-
-vite-plugin-dedale offers a simple and flexible solution for managing the routes and templates of your static site. You can use JavaScript or TypeScript for your routes, and Nunjucks or Edge.js for your templates. vite-plugin-dedale also allows you to read Markdown files and retrieve their content and metadata.
-
-When to use vite-plugin-dedale:
-
-- If you need to generate a static site from variable data, such as a brochure website, a portfolio, a blog, or a documentation site
-
-- If you want to use Nunjucks or Edge.js as your template engine and JavaScript or TypeScript for your routes
-
-If vite-plugin-dedale doesn't meet your needs, you may want to consider other tools and plugins such as :
-
-- [11ty](https://www.11ty.dev/)
-- [Astro](https://astro.build/)
-- [Vite-plugin-eleventy](https://github.com/Snugug/vite-plugin-eleventy) (whose code inspired the development of vite-plugin-dedale)
-- [Vituum](https://vituum.dev/)
-- [Vite-plugin-ssr](https://vite-plugin-ssr.com/).
-
----
-
 ## Table of Content
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
 - [Load Files](#load-files)
@@ -46,6 +27,26 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
     - [Examples](#examples-1)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Introduction
+
+vite-plugin-dedale is a plugin for [Vite](https://vitejs.dev/) that helps you navigate the complexities of creating static sites, much like the mythological figure Daedalus (or "Dédale" in French).
+
+vite-plugin-dedale offers a simple and flexible solution for managing the routes and templates of your static site. You can use JavaScript or TypeScript for your routes, and Nunjucks or Edge.js for your templates. vite-plugin-dedale also allows you to read Markdown files and retrieve their content and metadata.
+
+When to use vite-plugin-dedale:
+
+- If you need to generate a static site from variable data, such as a brochure website, a portfolio, a blog, or a documentation site
+
+- If you want to use Nunjucks or Edge.js as your template engine and JavaScript or TypeScript for your routes
+
+If vite-plugin-dedale doesn't meet your needs, you may want to consider other tools and plugins such as :
+
+- [11ty](https://www.11ty.dev/)
+- [Astro](https://astro.build/)
+- [Vite-plugin-eleventy](https://github.com/Snugug/vite-plugin-eleventy) (whose code inspired the development of vite-plugin-dedale)
+- [Vituum](https://vituum.dev/)
+- [Vite-plugin-ssr](https://vite-plugin-ssr.com/).
 
 ## Getting Started
 
@@ -89,7 +90,7 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
    ```
 
 3. "Create a 'templates' directory at the root of your project and add a Nunjucks template file called 'index.njk' with the following content:"
-   ```html
+   ```nunjucks
    <!DOCTYPE html>
    <html lang="en">
      <head>
@@ -115,7 +116,7 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
 
 vite-plugin-dedale accepts the following options in its configuration:
 
-- `templateDir` (required): The path to the directory containing your Nunjucks templates.
+- `templateDir` (required): The path to the directory containing your templates.
 - `contentDir` (optional): The path to the directory containing your content files (such as Markdown files). This option enables hot reloading of these files in development mode.
 - `templateEngine` (required `nunjucks` | `edge`) defines the template engine to use for rendering routes.
 - `configureTemplateEngine` (optional): A function that allows you to customize the template Engine environment . This function takes in a Nunjucks or Edgejs environment as an argument and returns a modified version of that environment. For more information on how to configure Nunjucks, refer to the [Nunjucks documentation](https://mozilla.github.io/nunjucks/api.html#addfilter) or the [Edge-js documentation](https://github.com/edge-js/edge).

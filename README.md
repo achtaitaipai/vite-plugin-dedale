@@ -26,9 +26,8 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Installation](#installation)
+- [Getting Started](#getting-started)
 - [Configuration](#configuration)
-  - [Example](#example)
 - [Load Files](#load-files)
   - [`loadMdFile`](#loadmdfile)
     - [Parameters](#parameters)
@@ -48,11 +47,69 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Installation
+## Getting Started
 
-```bash
-$ npm install --save-dev vite-plugin-dedale
-```
+1. Install vite-plugin-dedale in your Vite project
+
+   ```bash
+   $ npm install --save-dev vite-plugin-dedale
+   ```
+
+2. Create a` vite.config.ts` file at the root of your project and add the following configuration:
+
+   ```ts
+   import { defineConfig } from "vite";
+   import { dedale } from "vite-plugin-dedale";
+
+   export default defineConfig({
+     plugins: [
+       dedale({
+         templateDir: "templates",
+         templateEngine: "nunjucks",
+         routes: [
+           {
+             url: "/",
+             template: "index.njk",
+             data: {
+               title: "Home",
+             },
+           },
+           {
+             url: "/about/",
+             template: "index.njk",
+             data: {
+               title: "About Us",
+               foo: "bar",
+             },
+           },
+         ],
+       }),
+     ],
+   });
+   ```
+
+3. "Create a 'templates' directory at the root of your project and add a Nunjucks template file called 'index.njk' with the following content:"
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+     <head>
+       <meta charset="UTF-8" />
+       <title>{{ title }}</title>
+     </head>
+     <body>
+       <h1>{{ title }}</h1>
+       <p>Welcome to my site!</p>
+       {% if foo %}
+       <span>{{ foo }}</span>
+       {% endif %}
+     </body>
+   </html>
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+5. Visit http://localhost:5173/ or http://localhost:5173/about/ in your browser to see your static site in action.
 
 ## Configuration
 
@@ -66,47 +123,6 @@ vite-plugin-dedale accepts the following options in its configuration:
   - `url` (string): The URL for this route.
   - `template` (string): The name of the Nunjucks template to use for this route.
   - `data` (object, optional): An object containing data to be passed to the Nunjucks template for this route.
-
-### Example
-
-```ts
-//vite.config.ts
-import { defineConfig } from "vite";
-import { dedale } from "vite-plugin-dedale";
-
-export default defineConfig({
-  plugins: [
-    dedale(
-		{
-		templateDir: "templates",
-		contentDir: "content",
-		templateEngine: "nunjucks",
-		configureTemplateEngine: (env) => {
-			env.addGlobal("siteTitle", "MySite");
-			return env;
-		},
-		routes: [
-			{
-				url: "/",
-				template: "index.njk",
-				data: {
-					title: "Home",
-					foo: "bar",
-				},
-			},
-			{
-				url: "/about/",
-				template: "about.njk",
-				data: {
-					title: "About Us",
-					truc: "bidule,"
-				},
-			},
-		],
-	});,
-  ],
-});
-```
 
 ## Load Files
 
@@ -241,7 +257,7 @@ nunjucks :
 edge.js :
 
 ```edge.js
- @set('aboutRoute',route('/contact/'))
+@set('aboutRoute',route('/contact/'))
 @if(aboutRoute)
 	<a href="{{ aboutRoute.url }}">About</a>
 @endif

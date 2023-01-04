@@ -15,7 +15,7 @@
   - [`loadMdFiles`](#loadmdfiles)
     - [Parameters](#parameters-1)
     - [Returns](#returns-1)
-- [Utility Functions for Use in Templates](#utility-functions-for-use-in-templates)
+- [Utility Functions and variables for Use in Templates](#utility-functions-and-variables-for-use-in-templates)
   - [`routes`](#routes)
     - [Parameters](#parameters-2)
     - [Returns](#returns-2)
@@ -24,6 +24,12 @@
     - [Parameters](#parameters-3)
     - [Returns](#returns-3)
     - [Examples](#examples-1)
+  - [`devmode`](#devmode)
+    - [Returns](#returns-4)
+    - [Examples](#examples-2)
+  - [`base`](#base)
+    - [Returns](#returns-5)
+    - [Examples](#examples-3)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -31,13 +37,13 @@
 
 vite-plugin-dedale is a plugin for [Vite](https://vitejs.dev/) that helps you navigate the complexities of creating static sites, much like the mythological figure Daedalus (or "Dédale" in French).
 
-vite-plugin-dedale offers a simple and flexible solution for managing the routes and templates of your static site. You can use JavaScript or TypeScript for your routes, and Nunjucks or Edge.js for your templates. vite-plugin-dedale also allows you to read Markdown files and retrieve their content and metadata.
+vite-plugin-dedale offers a simple and flexible solution for managing the routes and templates of your static site. You can use JavaScript or TypeScript for your routes, and Nunjucks or Edge-js for your templates. vite-plugin-dedale also allows you to read Markdown files and retrieve their content and metadata.
 
 When to use vite-plugin-dedale:
 
 - If you need to generate a static site from variable data, such as a brochure website, a portfolio, a blog, or a documentation site
 
-- If you want to use Nunjucks or Edge.js as your template engine and JavaScript or TypeScript for your routes
+- If you want to use Nunjucks or Edge-js as your template engine and JavaScript or TypeScript for your routes
 
 If vite-plugin-dedale doesn't meet your needs, you may want to consider other tools and plugins such as :
 
@@ -113,6 +119,8 @@ If vite-plugin-dedale doesn't meet your needs, you may want to consider other to
    ```
 5. Visit http://localhost:5173/ or http://localhost:5173/about/ in your browser to see your static site in action.
 
+For a more complete example, check out the Daedalus blog, which uses vite-plugin-dedale : https://github.com/achtaitaipai/daedalus-s-blog
+
 ## Configuration
 
 vite-plugin-dedale accepts the following options in its configuration:
@@ -123,8 +131,8 @@ vite-plugin-dedale accepts the following options in its configuration:
 - `configureTemplateEngine` (optional): A function that allows you to customize the template Engine environment . This function takes in a Nunjucks or Edgejs environment as an argument and returns a modified version of that environment. For more information on how to configure Nunjucks, refer to the [Nunjucks documentation](https://mozilla.github.io/nunjucks/api.html#addfilter) or the [Edge-js documentation](https://github.com/edge-js/edge).
 - `routes` (required): An array of route objects, each with the following properties:
   - `url` (string): The URL for this route.
-  - `template` (string): The name of the Nunjucks template to use for this route.
-  - `data` (object, optional): An object containing data to be passed to the Nunjucks template for this route.
+  - `template` (string): The name of the template to use for this route.
+  - `data` (object, optional): An object containing data to be passed to the template for this route.
 
 ## Load Files
 
@@ -193,9 +201,9 @@ An array of objects, each with the following properties:
 - `raw` (string): The content of the file.
 - `content` (string): The parsed content of the file.
 
-## Utility Functions for Use in Templates
+## Utility Functions and variables for Use in Templates
 
-vite-plugin-dedale provides two utility functions that can be used in Nunjucks or Edge.js templates:
+vite-plugin-dedale provides two utility functions and variables that can be used in Nunjucks or Edge-js templates:
 
 ### `routes`
 
@@ -210,7 +218,7 @@ Returns an array of all routes that match the provided pattern.
 An array of objects, each representing a route with the following properties:
 
 - `url` (string): The URL of the route.
-- `template` (string): The path to the Nunjucks template file.
+- `template` (string): The path to the template file.
 - `data` (object): An optional data object that will be passed to the template when rendering the route.
 
 #### Examples
@@ -223,7 +231,7 @@ nunjucks :
 {% endfor %}
 ```
 
-edge.js :
+edge-js :
 
 ```edge.js
 @each(route in routes('/blog/*'))
@@ -244,7 +252,7 @@ Returns the first route that matches the provided pattern.
 An object representing the route with the following properties:
 
 - `url` (string): The URL of the route.
-- `template` (string): The path to the Nunjucks template file.
+- `template` (string): The path to the template file.
 - `data` (object): An optional data object that will be passed to the template when rendering the route.
 
 #### Examples
@@ -258,11 +266,59 @@ nunjucks :
 {% endif %}
 ```
 
-edge.js :
+edge-js :
 
 ```edge.js
 @set('aboutRoute',route('/about/'))
 @if(aboutRoute)
 	<a href="{{ aboutRoute.url }}">About</a>
 @endif
+```
+
+### `devmode`
+
+Returns a boolean indicating whether the project is running in development mode.
+
+#### Returns
+
+- `true` if the project is running in development mode, `false` otherwise.
+
+#### Examples
+
+nunjucks :
+
+```nunjucks
+{% if devmode %}
+	<!-- some development-specific content -->
+{% endif %}
+```
+
+edge-js
+
+```edge.js
+@if(devmode)
+	<!-- some development-specific content -->
+@endif
+```
+
+### `base`
+
+Returns the base URL defined in the Vite configuration.
+
+#### Returns
+
+- A string representing the base URL defined in the Vite configuration.
+
+#### Examples
+
+nunjucks :
+
+```nunjucks
+<a href="{{ base }}/about/">About</a>
+```
+
+edge-js
+
+```edge.js
+<a href="{{ base }}/about/">About</a>
 ```

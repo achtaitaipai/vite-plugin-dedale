@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-dedale",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A ViteJS plugin for building static sites with nunjucks or edge templates and markdown content. ",
   "repository": "https://github.com/achtaitaipai/vite-plugin-dedale",
   "type": "module",

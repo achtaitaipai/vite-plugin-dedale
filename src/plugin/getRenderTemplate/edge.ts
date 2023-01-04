@@ -5,6 +5,7 @@ import { makeGlobRoute, makeGlobRoutes } from "./global";
 export const getRenderWithEdge: GetRenderTemplate<ConfigureEdge> = (
   templateDir,
   routes,
+  base,
   configure,
   devMode = false
 ) => {
@@ -12,6 +13,7 @@ export const getRenderWithEdge: GetRenderTemplate<ConfigureEdge> = (
   edge.mount(templateDir);
   edge.global("routes", makeGlobRoutes(routes));
   edge.global("route", makeGlobRoute(routes));
+  edge.global("base", base);
   return configure ? getRenderMethod(configure(edge)) : getRenderMethod(edge);
 };
 

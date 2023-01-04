@@ -8,6 +8,7 @@ export { getRenderWithNunjucks as getNunjucksEnv } from "./nunjucks";
 export const getRenderTemplate = (
   settings: TemplateEngineSettings,
   routes: Route[],
+  base: string,
   devMode: boolean
 ) =>
   match<TemplateEngineSettings>(settings)
@@ -15,6 +16,7 @@ export const getRenderTemplate = (
       getRenderWithEdge(
         settings.templateDir,
         routes,
+        base,
         settings.configureTemplateEngine,
         devMode
       )
@@ -23,6 +25,7 @@ export const getRenderTemplate = (
       getRenderWithNunjucks(
         settings.templateDir,
         routes,
+        base,
         settings.configureTemplateEngine,
         devMode
       )

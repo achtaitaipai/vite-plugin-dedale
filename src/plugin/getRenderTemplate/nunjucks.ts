@@ -7,12 +7,14 @@ import { makeGlobRoute, makeGlobRoutes } from "./global";
 export const getRenderWithNunjucks: GetRenderTemplate<ConfigureNunjucks> = (
   templateDir,
   routes,
+  base,
   configure,
   devMode = false
 ) => {
   const env = nunjucks.configure(templateDir, { watch: devMode });
   env.addGlobal("routes", makeGlobRoutes(routes));
   env.addGlobal("route", makeGlobRoute(routes));
+  env.addGlobal("base", base);
   return configure ? getRenderMethod(configure(env)) : getRenderMethod(env);
 };
 

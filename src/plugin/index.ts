@@ -10,15 +10,19 @@ export const plugin = (options: Options): Plugin => {
     resolveSettings(options);
 
   let renderTemplate: RenderRoute;
+  let base: string;
   return {
     name: "vite-plugin-dedale",
     enforce: "pre",
 
-    config(_, { command, mode }) {
+    config(config, { command, mode }) {
+      base = config.base ?? "";
+      base = base.replace(/\/$/, "");
       if (command === "build") {
         renderTemplate = getRenderTemplate(
           templateEngineSettings,
           routes,
+          base,
           false
         );
         const input = routes.map(({ url }) => parseRoute(url));
@@ -33,15 +37,16 @@ export const plugin = (options: Options): Plugin => {
         renderTemplate = getRenderTemplate(
           templateEngineSettings,
           routes,
+          base,
           true
         );
       }
     },
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        const url = req.url as string;
+        const url = req.url;
         if (!url) return;
-        const currentRoute = routes.find((route) => route.url === url);
+        const currentRoute = routes.find((route) => base + route.url === url);
         if (!currentRoute) return next();
         try {
           const html = renderTemplate(currentRoute);

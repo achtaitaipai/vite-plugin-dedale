@@ -8,6 +8,7 @@ export type ConfigureEdge = (env: EdgeJsEnv) => EdgeJsEnv;
 export type GetRenderTemplate<T extends Function> = (
   templateDir: string,
   routes: Route[],
+  base: string,
   configure?: T,
   devMode?: boolean
 ) => RenderRoute;

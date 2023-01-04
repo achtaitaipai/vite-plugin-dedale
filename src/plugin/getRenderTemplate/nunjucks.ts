@@ -2,19 +2,18 @@ import type { Environment } from "nunjucks";
 import type { Route } from "../../../dist";
 import type { ConfigureNunjucks, GetRenderTemplate } from "../../types";
 import nunjucks from "nunjucks";
-import { makeGlobRoute, makeGlobRoutes } from "./global";
+import { makeGlobRoute, makeGlobRoutes } from "./globalTemplateVariables";
 
 export const getRenderWithNunjucks: GetRenderTemplate<ConfigureNunjucks> = (
   templateDir,
-  routes,
-  base,
+  globals,
   configure,
   devMode = false
 ) => {
   const env = nunjucks.configure(templateDir, { watch: devMode });
-  env.addGlobal("routes", makeGlobRoutes(routes));
-  env.addGlobal("route", makeGlobRoute(routes));
-  env.addGlobal("base", base);
+  for (const key in globals) {
+    env.addGlobal(key, globals[key]);
+  }
   return configure ? getRenderMethod(configure(env)) : getRenderMethod(env);
 };
 

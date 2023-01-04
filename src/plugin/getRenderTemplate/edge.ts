@@ -1,19 +1,18 @@
 import { Edge } from "edge.js";
 import type { Route, ConfigureEdge, GetRenderTemplate } from "../../types";
-import { makeGlobRoute, makeGlobRoutes } from "./global";
+import { makeGlobRoute, makeGlobRoutes } from "./globalTemplateVariables";
 
 export const getRenderWithEdge: GetRenderTemplate<ConfigureEdge> = (
   templateDir,
-  routes,
-  base,
+  globals,
   configure,
   devMode = false
 ) => {
   const edge = new Edge({ cache: !devMode });
   edge.mount(templateDir);
-  edge.global("routes", makeGlobRoutes(routes));
-  edge.global("route", makeGlobRoute(routes));
-  edge.global("base", base);
+  for (const key in globals) {
+    edge.global(key, globals[key]);
+  }
   return configure ? getRenderMethod(configure(edge)) : getRenderMethod(edge);
 };
 

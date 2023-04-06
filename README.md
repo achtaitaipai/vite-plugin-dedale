@@ -168,7 +168,7 @@ An object with the following properties:
 - `frontmatter` (T): The frontmatter metadata of the file.
 - `raw` (string): The content of the file.
 - `content` (string): The parsed content of the file.
-- `headings` (object): A list of headings (h1 -> h6) in the Markdown. This list follows the type: `{ depth: number; slug: string; text: string }[]`.
+- `headings` (array): A list of headings (h1 -> h6) in the Markdown. This list follows the type: `{ depth: number; slug: string; text: string }[]`.
 
 ### `loadMdFiles`
 
@@ -201,7 +201,7 @@ An array of objects, each with the following properties:
 - `frontmatter` (T): The frontmatter metadata of the file.
 - `raw` (string): The content of the file.
 - `content` (string): The parsed content of the file.
-- `headings` (object): A list of headings (h1 -> h6) in the Markdown. This list follows the type: `{ depth: number; slug: string; text: string }[]`.
+- `headings` (array): A list of headings (h1 -> h6) in the Markdown. This list follows the type: `{ depth: number; slug: string; text: string }[]`.
 
 ## Utility Functions and variables for Use in Templates
 

@@ -13,7 +13,13 @@ type MdFile<T extends Record<string, any>> = {
   frontmatter: T;
   raw: string;
   content: string;
+  headings: Heading[];
 };
+
+/**
+ *  A list of headings in the Markdown document.
+ */
+type Heading = { depth: number; text: string; slug: string };
 
 /**
  * Parses the content and frontmatter metadata from a Markdown file.
@@ -31,7 +37,32 @@ const parseFile = <T extends Record<string, any>>(url: string): MdFile<T> => {
     frontmatter: data.attributes as T,
     raw: data.body,
     content: marked.parse(data.body),
+    headings: getHeadings(data.body),
   };
+};
+
+type HeadingToken = {
+  depth: number;
+  text: string;
+} & marked.Token;
+
+/**
+ *
+ * @param markdown markdown document
+ * @returns {Heading[]} A list of headings (h1 -> h6) in the Markdown document with associated metadata.
+ */
+
+const getHeadings = (markdown: string) => {
+  const slugger = new marked.Slugger();
+  const tokens = marked.lexer(markdown);
+  const headingTokens = tokens.filter(
+    (token) => token.type === "heading"
+  ) as HeadingToken[];
+  return headingTokens.map(({ depth, text }) => ({
+    depth,
+    text,
+    slug: slugger.slug(text),
+  }));
 };
 
 /**
